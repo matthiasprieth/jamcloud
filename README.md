@@ -9,8 +9,8 @@ On the shoulders of: HTML5, Javascript, CSS, Web Audio API, Canvas, WebGl
 - [live demo](http://users.multimediatechnology.at/~fhs33735/qpt1/)
 - [portfolio link](http://portfolio.multimediatechnology.at/projects/2012-jamcloud)
 
-![jamcloud preview](http://portfolio2.s3.amazonaws.com/system/projects/1098/media/4757/presentation_media.jpg)
+![jamcloud preview](https://github.com/matthiasprieth/jamcloud/blob/master/preview.jpg)
 JamCloud
 
-![filter slider drag&drop](http://portfolio2.s3.amazonaws.com/system/projects/1098/media/4760/presentation_media.png)
+![filter slider drag&drop](https://github.com/matthiasprieth/jamcloud/blob/master/menu_preview.jpg)
 Filter, Slider, Drag&Drop
