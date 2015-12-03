@@ -5,30 +5,30 @@
 	<link rel="stylesheet" type="text/css" media="screen, projection" href="css/style.css" /> <!--CSS-Style für JamCloud-->
 	<link rel="stylesheet" type="text/css" media="screen, projection" href="css/slider.css" /> <!--CSS-Style speziell für die Slider-->
 
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 		 <!--jQuery-->
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script> <!--jQuery-UI-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 		 <!--jQuery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script> <!--jQuery-UI-->
 	<script type="text/javascript" src="js/jamcloud.js"></script>									 <!--js File für mein JamCloud-->
 	<script type="text/javascript" src="js/presets.js"></script>									 <!--presets für digitale Signale und mathematische Funktionen für das generieren digitaler Signale, welche nicht von mir selbst geschrieben wurden-->
 	<script src="js/Three.js"></script>																		 <!--derzeit beliebteste library Three.js für WebGl(zum zeichnen der WebGl Notenspur/Feld) -->
 
 	<script type"text/javascript">
-		
-		function myInit(){ // meine Init Funktion, welche nach body onload ausgeführt wird 
-		
+
+		function myInit(){ // meine Init Funktion, welche nach body onload ausgeführt wird
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////////////////////////////////////////////////////////jQuery show und hide Funktionen für anzuzeigende Tabs
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+
 			$(".dropArea").hide(1500);
 			$(".fxSlider").hide(1500);
 			$(".synthSlider").show(1500); //am Anfang sollen nur die Synthslider und Elemente angezeigt werden.
-			
-			$("#synth").click(function () { 
+
+			$("#synth").click(function () {
 			  $(".dropArea").hide(1500);
 			  $(".fxSlider").hide(1500);
 			  $(".synthSlider").show(1500);// nur synthSlider Elemente anzeigen
 			  myJamCloud.disconnect(myJamCloud.fileSource); //falls bereits eine mp3. Datei als fürs Keyboard zu spielende Datei bestimmt ist, wird diese disconnected.
-			  myJamCloud = new JamCloud(); // wenn man auf den tab Synth clickt, wird JamCloud wieder neu initialisiert.	
+			  myJamCloud = new JamCloud(); // wenn man auf den tab Synth clickt, wird JamCloud wieder neu initialisiert.
 			});
 			$("#loops").click(function () {
 			  $(".synthSlider").hide(1500);
@@ -40,21 +40,21 @@
 			  $(".synthSlider").hide(1500);
 			  $(".fxSlider").show(1500);// nur fxSlider-Elemente anzeigen
 			});
-			
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////////////////////////////////////////////////////////JamCloud initialisieren
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			myJamCloud = new JamCloud();// JamCloud wird initialisiert	
-			
+
+			myJamCloud = new JamCloud();// JamCloud wird initialisiert
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////////////////////////////////////////////////////////WebGl für Notenspur mit Three.js
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			var camera, scene, renderer, geometry, material, meshes, change_note = -1, block_reset = 0; change_z = 0; 
+
+			var camera, scene, renderer, geometry, material, meshes, change_note = -1, block_reset = 0; change_z = 0;
 
 			function init() {
-				
+
 				scene = new THREE.Scene(); //neue Szene erzeugen
 
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 ); //Kamera erzeugen mit bestimmten Blickwinkel und wie weit die Objekte in der Z-Richtung (1 bis 10000) noch im Blickfeld liegen.
@@ -64,7 +64,7 @@
 
 				geometry = new THREE.CubeGeometry( 50, 50, 300 ); //Würfelmaße (x,y,z)
 				material = new THREE.MeshBasicMaterial( { color: 0x65A3B9, wireframe: false } ); //Material in bestimmter Farbe und Wireframedarstellung (Ränder des Objektes ohne Füllung) ausschalten.
-				
+
 				//mehrere Würfel/Rechtecke erstellen diese in x-Richtung verschoben anzeigen und in Array abspeichern
 				var k = -1400;
 				meshes = new Array();;
@@ -73,28 +73,28 @@
 					meshes[i].position.x = k;
 					scene.add( meshes[i] );
 					k+=100;
-				}	
-				
+				}
+
 				renderer = new THREE.CanvasRenderer(); //Renderer definieren
 				renderer.setSize(1122, 250); //Größe des Renderer definieren
 
-				var fenster = document.getElementById('webGl'); 
+				var fenster = document.getElementById('webGl');
 				fenster.appendChild(renderer.domElement); //das WebGl-div dem Renderer zuweisen
-				
+
 				function animate() {
 					requestAnimationFrame( animate ); //animate immerwieder nach gewisser Zeit aufrufen
 					render(); //render-Funktion wird hier deshalb auch immer wieder aufgerufen -> Bewegunng/Animation
 				}
 
-				function render() { 
+				function render() {
 					if(change_note != -1){ //wenn eine Taste gedrückt wird, wird change_note auf einen Wert != -1 gesetzt.
-						
+
 						if(block_reset != change_note){ //wenn neue Note gespielt wird den alten Block wieder auf 0 setzen, sonst würde er irgendwo derweile stehen bleiben
 							meshes[block_reset].position.z = 0;
 							meshes[block_reset].position.y = 0;
-						}	
+						}
 						block_reset = change_note;
-						
+
 						if(meshes[change_note].position.z > -6000){ //solange Blöcke noch im sichtbaren Bereich, oder gleiche Taste nicht erneut gedrückt wird, Block nach oben und in die Tiefe "werfen"
 							meshes[change_note].position.y += 300;
 							meshes[change_note].position.z -= 300;
@@ -103,35 +103,35 @@
 							meshes[change_note].position.y = 0;
 							change_note = -1;
 						}
-						
+
 					}
 					renderer.render( scene, camera ); //Szene mit ausgewählter Kamera rendern.
 				}
-				
-				
+
+
 				animate(); //Animate aufrufen
 
 			}
-			
+
 			init(); //init ausführen
-			
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////////////////////////////////////////////////////////Funktionen damit die entsprechenden Events ausgeführt werden können, wenn Tasten des Pianos geklickt werden oder bei Druck der Tastaturtasten
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
-			cursorPoint = function(obj){ //cursorPoint Funktion welche Position bei Mausklick, die Position relativ zum Element bestimmt 
+
+			cursorPoint = function(obj){ //cursorPoint Funktion welche Position bei Mausklick, die Position relativ zum Element bestimmt
 				clickX = window.event.x-obj.offsetLeft + document.body.scrollLeft + document.documentElement.scrollLeft; //Mausposition(x) - Position vom Element(x) + Scrollpixel(x)
 				clickY = window.event.y-obj.offsetTop + document.body.scrollTop + document.documentElement.scrollTop; //Mausposition(y) - Position vom Element(y) + Scrollpixel(y)
 				playNote({ 'x': clickX, 'y': clickY }, true); //als Objekt returnen
 			}
-			
+
 			window.onkeydown = function(ev){ //Bei Tastaturdruck
 				playNote(ev, false); //playNote aufrufen mit Event und false, da mouseEvent = false
 			}
-			
-			playNote = function(ev, mouseEvent){ 
+
+			playNote = function(ev, mouseEvent){
 				var note = 666; //keycode für Abbruch
-				var pitch = 1; //Standardabspieltempo für samples bei höherem pitch -> höhere Note 
+				var pitch = 1; //Standardabspieltempo für samples bei höherem pitch -> höhere Note
 				//-----------------------------------C1 bis C2
 				if(ev.keyCode == 89 || (mouseEvent == true && ev.x > 244 && ev.x < 277 && ev.y > 75  )){  //Y-Taste
 					note = 0;
@@ -147,15 +147,15 @@
 				}
 				if(ev.keyCode == 88 || (mouseEvent == true && ev.x > 277 && ev.x < 311 && ev.y > 75  )){  //X-Taste
 					note = 2;
-					myJamCloud.pitch= 1.15;	
+					myJamCloud.pitch= 1.15;
 					meshes[note].position.z = 0;
 					change_note = note;
 				}
 				if(ev.keyCode == 68 || (mouseEvent == true && ev.x > 302 && ev.x < 321 && ev.y < 75  )){  //D-Taste
 					note = 3;
-					myJamCloud.pitch= 1.225;		
+					myJamCloud.pitch= 1.225;
 					meshes[note].position.z = 0;
-					change_note = note;					
+					change_note = note;
 				}
 				if(ev.keyCode == 67 || (mouseEvent == true && ev.x > 313 && ev.x < 345 && ev.y > 75  )){  //C-Taste
 					note = 4;
@@ -313,33 +313,33 @@
 					meshes[note].position.z = 0;
 					change_note = note;
 				}
-				
+
 				 if( note==666 ) return; //Abbruch
 
-				myJamCloud.noteOn( note ); //abspielen der gewünschten Note 
-				
+				myJamCloud.noteOn( note ); //abspielen der gewünschten Note
+
 			}
-			
-			
+
+
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			/////////////////////////////////////////////////////////////////Slider mit jQueryevents bestücken
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+
 			$( "#volumeSlider" ).slider({ //Lautstärkenregler
 			animate: true,
-			range: "min", 
+			range: "min",
 			value: 30, //Ausgangsvalue
 			min: 0, //minimal Value
 			max: 100, //maximal Value
 			step: 5, //in 5er Schritte Regler verschiebbar
-			
+
 				slide: function( event, ui ) { //beim verschieben des Reglers
 					myJamCloud.gainValue = ui.value; //Reglervalue in Variable gainValue innerhalb myJamCloud speichern
 					$( "#slider-result1" ).html( ui.value ); //Reglervalue anpassen/überschreiben
 				},
-			
+
 			});
-			
+
 			$( "#presetSlider" ).slider({ //Synth-Presets
 			animate: true,
 			range: "min",
@@ -347,15 +347,15 @@
 			min: 1,
 			max: 20,
 			step: 1,
-			
+
 				slide: function( event, ui ) {
 					myJamCloud.preset = ui.value;
 					$( "#slider-result2" ).html( ui.value );
 					myJamCloud.newSound();
 				},
-			
+
 			});
-			
+
 			$( "#filterType" ).slider({ //Filtertypen (Tiefpassfilter, Hochpassfilter...)
 			animate: true,
 			range: "min",
@@ -370,7 +370,7 @@
 				},
 
 			});
-			
+
 			$( "#filterFrequency" ).slider({  //Filtergrenzfrequenz
 			animate: true,
 			range: "min",
@@ -385,7 +385,7 @@
 				},
 
 			});
-			
+
 			$( "#filterQuality" ).slider({ //Filterqualitätsfaktor
 			animate: true,
 			range: "min",
@@ -400,7 +400,7 @@
 				},
 
 			});
-			
+
 			$( "#volumePlayFileSlider" ).slider({ //Lautstärkenregler für Audiofiles, welche übers Keyboard gespielt werden können
 			animate: true,
 			range: "min",
@@ -408,12 +408,12 @@
 			min: 0,
 			max: 100,
 			step: 5,
-			
+
 				slide: function( event, ui ) {
 					myJamCloud.gainValue = ui.value;
 					$( "#slider-result6" ).html( ui.value );
 				},
-			
+
 			});
 
 			$( "body" ).append("<script type='text/javascript' src='http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-4f03b873767beca5'><\/script>"); //javascript für social Buttons erst ganz am Ende laden, da diese nicht die Funktion von JamCloud beinträchtigen sollen.
@@ -421,8 +421,8 @@
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////HTML
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-		
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	</script>
 	</head>
 	<body onload="myInit()"> <!--javascript nach Seitenaufbau laden-->
@@ -449,7 +449,7 @@
 					<p>LOOPS</p>
 				</div>
 				<div id="fx" class="tabs">
-					<p>FX</p>	
+					<p>FX</p>
 				</div>
 				<div id="sliders">
 					<div class="synthSlider">
@@ -464,7 +464,7 @@
 						<div id="slider-result2" class="slider-results">1</div>
 						<input type="hidden" id="hidden2"/>
 					</div>
-					
+
 					<div class="fxSlider">
 						<h2>Filtertyp</h2>
 						<div class="slider"  id="filterType"></div> <!--Filtertypen (Tiefpassfilter, Hochpassfilter...)-->
@@ -483,9 +483,9 @@
 						<div id="slider-result5" class="slider-results">1</div>
 						<input type="hidden" id="hidden5"/>
 					</div>
-					
-				</div>		
-				
+
+				</div>
+
 				<div id="loopArea" class="dropArea"> <!--dropArea für Files welche immer wieder als beat abgespielt werden (loop)-->
 					<h2>DRAG</h2>
 					<h2>&</h2>
@@ -505,15 +505,15 @@
 						<input type="hidden" id="hidden6"/>
 				</div>
 			</div>
-			
+
 			<div id="webGl"> <!--WebGl-Notenspur-->
 			</div>
-			
+
 			<canvas id="piano" width="1122" height="128" onclick="cursorPoint(this)">Your browser does not support Canvas</canvas> <!--Canvas Piano-->
 
-		</div>		
-		
+		</div>
+
 		</body>
-	
-	
+
+
 </html>
