@@ -6,7 +6,7 @@ JamCloud is a project i made in 2012. It is a Web Audio API synthesizer with pre
 On the shoulders of: HTML5, Javascript, CSS, Web Audio API, Canvas, WebGl   
 
 ##Links:
-- [live demo](http://jamcloud.herokuapp.com/)
+- [live demo](https://matthiasprieth.github.io/jamcloud)
 - [portfolio link](http://portfolio.multimediatechnology.at/projects/2012-jamcloud)
 
 ![jamcloud preview](https://github.com/matthiasprieth/jamcloud/blob/master/preview.jpg)
